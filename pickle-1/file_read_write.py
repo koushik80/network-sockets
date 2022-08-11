@@ -6,10 +6,10 @@ x = 420
 y = 12.0
 
 
-with open("file", "w") as new_file:
-    new_file.write(s+'\n')
-    new_file.write(str(x)+'\n')
-    new_file.write(str(y))
+with open("file", "wb") as new_file:
+    new_file.write(s+'\n'.encode())
+    new_file.write(str(x)+'\n'.encode())
+    new_file.write(str(y).encode())
 
 
 with open("file", "rb") as new_file:
