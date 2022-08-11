@@ -1,5 +1,6 @@
 import socket
 
+
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 # AF_INET is the Internet address family IPv4
 # SOCK_STREAM is the socket type for TCP
@@ -22,3 +23,14 @@ conn, addr = server.accept()
 # accepts an incoming connection request from a TCP client
 # conn is a new socket object usable to
 # address is the address bound
+
+connected = True
+
+while connected:  # infine loop
+    #message = conn.recv(1024).decode('utf-8')
+    message = conn.recv(1024).decode('utf-8')
+    print(message)
+    connected = False
+
+    conn.close()
+    server.close()
