@@ -19,6 +19,7 @@ server.bind((HOST, PORT))
 server.listen()  # number of max. connections as parameter
 
 conn, addr = server.accept()
+print("Connection from: " + str(addr))
 # The accept() method Python's socket class
 # accepts an incoming connection request from a TCP client
 # conn is a new socket object usable to
@@ -28,9 +29,13 @@ connected = True
 
 while connected:  # infine loop
     #message = conn.recv(1024).decode('utf-8')
-    message = conn.recv(1024).decode('utf-8')
-    print(message)
-    connected = False
+    if message:
+        message = conn.recv(1024).decode()
+        print("from connected user: " + str(message))
+        message = input(' -> ')
+        conn.send(message.encode())  # send mes to the client
+        if message == 'quit':
+            connected = False
 
     conn.close()
-    server.close()
+    # server.close()
