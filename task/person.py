@@ -5,11 +5,10 @@ class Person:
         self.age = age
 
     def print_person(self):
-        return self.name + ' ' + self.age
+        print(self.name, self.age)
 
     def increase_age(self, years):
-        years = 10
-        self.age = self.age + years
+        self.age += int(years)
         return self.age
 
 

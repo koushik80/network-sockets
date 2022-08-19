@@ -1,50 +1,31 @@
 import socket
-import threading
+#import threading
 from person import Person
 import pickle
 
-HEADER = 64
+
+HOST = 'localhost'
 PORT = 5050
-SERVER = socket.gethostbyname(socket.gethostname())
-ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = "!DISCONNECT"
+#ADDR = (HOST, PORT)
+#FORMAT = 'utf-8'
 
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(ADDR)
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server.bind((HOST, PORT))
 
-p1 = Person
-
-
-def handle_client(conn, addr):
-    print(f"[NEW CONNECTION] {addr} connected.")
-
-    connected = True
-    while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
-
-            print(f"[{addr}] {msg}")
-            conn.send("Msg received".encode(FORMAT))
-
-    conn.close()
+connected = True
+p1 = Person('Matti', 50)
 
 
 def start_server():
     server.listen()
-    print(f"[LISTENING] Server is listening on {SERVER}")
-    while True:
-        conn, addr = server.accept()
-        thread = threading.Thread(target=handle_client, args=(conn, addr))
-        thread.start()
-        print(f"[ACTIVE CONNECTIONS] {threading.activeCount() - 1}")
-        conn.send(pickle.dump(p1))
+    print(f"Listening at {HOST} on PORT {PORT}")
+    while connected:
+        client_socket, addr = server.accept()
+        print(f'CONNECTION FROM {addr}')
+        msg = pickle.dumps(p1)
+        client_socket.send(msg)
 
 
-print("[STARTING] server is starting...")
 start_server()
