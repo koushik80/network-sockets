@@ -15,4 +15,7 @@ while connected:
     if msg:
         msg = pickle.loads(msg)
         msg.print_person()
+        msg.increase_age(10)
+        # msg.pickle.dumps(msg)
+        # client.send(msg)
         connected = False

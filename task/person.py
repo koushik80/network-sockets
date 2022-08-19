@@ -10,7 +10,3 @@ class Person:
     def increase_age(self, years):
         self.age += int(years)
         return self.age
-
-
-person = Person('rajon', 40)
-print(person.increase_age(10))

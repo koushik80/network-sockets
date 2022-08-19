@@ -22,10 +22,15 @@ def start_server():
     server.listen()
     print(f"Listening at {HOST} on PORT {PORT}")
     while connected:
-        client_socket, addr = server.accept()
+        conn, addr = server.accept()
         print(f'CONNECTION FROM {addr}')
         msg = pickle.dumps(p1)
-        client_socket.send(msg)
+        conn.send(msg)
+
+        client_msg = conn.recv(1024)
+        if client_msg:
+            client_msg = client_msg.loads(msg)
+            client_msg.print_person()
 
 
 start_server()
